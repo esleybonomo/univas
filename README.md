@@ -58,8 +58,7 @@ docker compose version
 ---
 
 ### 1.4 IDE (opcional, mas recomendado)
-- IntelliJ IDEA Community **ou**
-- Eclipse/STS
+- VS Code
 
 ---
 
