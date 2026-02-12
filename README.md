@@ -204,7 +204,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
     @Bean
-    WebClient service_bWebClient(WebClient.Builder builder,
+    WebClient ServiceBWebClient(WebClient.Builder builder,
                                 @Value("${services.b.base-url}") String baseUrl) {
         return builder.baseUrl(baseUrl).build();
     }
@@ -214,7 +214,7 @@ public class WebClientConfig {
 ---
 
 ### 6.3 service-a — Cliente do service-b
-Crie `service-a/src/main/java/com/univas/sd/service_a/client/service_bClient.java`
+Crie `service-a/src/main/java/com/univas/sd/service_a/client/ServiceBClient.java`
 
 ```java
 package com.univas.sd.service_a.client;
@@ -227,12 +227,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
-public class service_bClient {
+public class ServiceBClient {
 
     private final WebClient webClient;
 
-    public service_bClient(WebClient service_bWebClient) {
-        this.webClient = service_bWebClient;
+    public ServiceBClient(WebClient serviceBClient) {
+        this.webClient = serviceBClient;
     }
 
     public Mono<String> ping() {
@@ -265,7 +265,7 @@ Crie `service-a/src/main/java/com/univas/sd/service_a/api/CallBController.java`
 ```java
 package com.univas.sd.service_a.api;
 
-import com.univas.sd.service_a.client.service_bClient;
+import com.univas.sd.service_a.client.ServiceBClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -275,9 +275,9 @@ import reactor.core.publisher.Mono;
 @RestController
 public class CallBController {
 
-    private final service_bClient client;
+    private final ServiceBClient client;
 
-    public CallBController(service_bClient client) {
+    public CallBController(ServiceBClient client) {
         this.client = client;
     }
 
