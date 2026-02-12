@@ -203,12 +203,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${services.b.base-url}")
+    private String serviceBBaseUrl;
+
     @Bean
-    WebClient ServiceBWebClient(WebClient.Builder builder,
-                                @Value("${services.b.base-url}") String baseUrl) {
-        return builder.baseUrl(baseUrl).build();
+    public WebClient serviceBWebClient() {
+        return WebClient.builder()
+                .baseUrl(serviceBBaseUrl)
+                .build();
     }
 }
+
 ```
 
 ---
@@ -497,10 +502,3 @@ docker compose start service-b
 - Swagger abre nos dois
 - `service-a` chama `service-b` via WebClient usando DNS do compose
 - Com `service-b` parado, `service-a` responde com fallback em até `2s`
-
----
-
-Se você quiser, eu adapto este README para o seu repositório real já com:
-- **nomes de pacotes padrão da sua turma**,  
-- um domínio mais real (*Pedidos* → *Pagamentos*) mantendo a mesma complexidade,  
-- e um `Makefile`/scripts (`run-local`, `run-docker`, `stop`, `logs`) para acelerar as aulas.
