@@ -1,3 +1,4 @@
-#univas
+# Repositório da disciplina de Sistemas Distribuidos
 
-Reposítório com objetivo de incluir conteúdos de aulas
+Professor: Esley Bonomo
+Ano: 2026
