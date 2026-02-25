@@ -33,7 +33,7 @@ public class SensorClient {
                     System.out.println("[client " + nodeId + "] writer created");
             while (true) {
                 double value = 20.0 + rnd.nextDouble() * 15.0; // 20.0 a 35.0
-                Message m = Message.newClientServer(nodeId, "TEMP", String.format("%.1f", value));
+                Message m = Message.newClientServer(nodeId, "TEMP", "%.1f".formatted(value));
                 System.out.println("[client " + nodeId + "] sending: " + m);
                 writer.println(KvCodec.encode(m));
                 Thread.sleep(1000);
