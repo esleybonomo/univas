@@ -8,14 +8,23 @@ public class KvCodec {
     public static String encode(Message m) {
         // TODO (Aula 1): montar uma linha no formato key=value;... com os campos do Message
         // Dica: id=...;origin=...;node=...;type=...;value=...;ts=...;ttl=...
-        return null;
+        return "id=" + m.id + ";origin=" + m.origin + ";node=" + m.node + 
+               ";type=" + m.type + ";value=" + m.value + ";ts=" + m.ts + ";ttl=" + m.ttl;
     }
 
     public static Message decode(String line) {
         // TODO (Aula 1): parsear a linha key=value;... para um Map e montar Message
         // Dica: split por ';' e depois split por '=' (apenas no primeiro '=')
         Map<String, String> map = parse(line);
-        return null;
+        return new Message(
+            map.get("id"),
+            map.get("origin"),
+            map.get("node"),
+            map.get("type"),
+            map.get("value"),
+            Long.parseLong(map.get("ts")),
+            Integer.parseInt(map.get("ttl"))
+        );
     }
 
     static Map<String, String> parse(String line) {

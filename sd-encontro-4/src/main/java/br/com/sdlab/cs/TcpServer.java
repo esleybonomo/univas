@@ -14,6 +14,17 @@ public class TcpServer {
 
         // TODO (Aula 1): criar ServerSocket e loop accept
         // Para cada conexão: criar ClientHandler e rodar em uma Thread
-        
+        try {
+            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("[server] started on port " + port);
+            while (true) {
+                System.out.println("[server] waiting for connection...");
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("[server] accepted connection from " + clientSocket.getRemoteSocketAddress());
+                new Thread(new ClientHandler(clientSocket)).start();
+            }
+        } catch (IOException e) {
+            System.out.println("[server] error: " + e.getMessage());
+        }
     }
 }

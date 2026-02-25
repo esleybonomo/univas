@@ -1,9 +1,0 @@
-br\com\sdlab\cs\SensorClient.class
-br\com\sdlab\cs\TcpServer.class
-br\com\sdlab\p2p\PeerHandler.class
-br\com\sdlab\p2p\PeerInjectClient.class
-br\com\sdlab\common\KvCodec.class
-br\com\sdlab\common\Message.class
-br\com\sdlab\p2p\PeerNode.class
-br\com\sdlab\cs\ClientHandler.class
-br\com\sdlab\p2p\PeerNode$HostPort.class

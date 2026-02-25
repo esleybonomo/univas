@@ -25,6 +25,22 @@ public class ClientHandler implements Runnable {
         // Para cada linha: decode -> Message e logar no console
         // Dica: new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8))
         // Ao final: fechar socket em finally
-        
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            System.out.println("[server] reader created for " + remote);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Message m = KvCodec.decode(line);
+                System.out.println("[server] received: " + m);
+            }
+        } catch (Exception e) {
+            System.out.println("[server] error handling client: " + e.getMessage());
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("[server] error closing socket: " + e.getMessage());
+            }
+        }
     }
 }

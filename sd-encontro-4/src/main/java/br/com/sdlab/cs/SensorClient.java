@@ -24,7 +24,29 @@ public class SensorClient {
         // enviar (encode + println)
         // Dormir 1000ms
         // Obs.: tratar quebra de conexão (o servidor pode cair)
-        
+        Socket socket = null;
+        try {
+            socket = new Socket(host, port);
+            System.out.println("[client " + nodeId + "] connected to server");
+            PrintWriter writer = new PrintWriter(
+                    new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+                    System.out.println("[client " + nodeId + "] writer created");
+            while (true) {
+                double value = 20.0 + rnd.nextDouble() * 15.0; // 20.0 a 35.0
+                Message m = Message.newClientServer(nodeId, "TEMP", String.format("%.1f", value));
+                System.out.println("[client " + nodeId + "] sending: " + m);
+                writer.println(KvCodec.encode(m));
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            System.out.println("[client " + nodeId + "] error: " + e.getMessage());
+        } finally {
+            try {
+                if (socket != null) socket.close();
+            } catch (Exception e) {
+                System.out.println("[client " + nodeId + "] error closing socket: " + e.getMessage());
+            }
+        }
 
     }
 }
