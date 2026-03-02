@@ -23,7 +23,12 @@ public class PeerHandler implements Runnable {
         try {
             // TODO (Aula 2): ler UMA linha (ou várias) e decodificar
             // Chamar node.onMessage(msg, from)
-            
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            String line = in.readLine();
+            if (line != null) {
+                Message m = KvCodec.decode(line);
+                node.onMessage(m, from);
+            }
         } catch (Exception e) {
             System.out.println("[" + node.peerId() + "] handler error: " + e.getMessage());
         } finally {
