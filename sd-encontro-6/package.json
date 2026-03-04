@@ -1,0 +1,31 @@
+{
+  "name": "sd-encontro-6",
+  "version": "1.0.0",
+  "description": "Monorepo didático com microsserviços em Node.js + TypeScript",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build -ws",
+    "build:watch": "npm run build:watch -ws",
+    "dev": "npm run dev -ws",
+    "start:users": "npm --workspace services/users-service run start",
+    "start:products": "npm --workspace services/products-service run start",
+    "start:orders": "npm --workspace services/orders-service run start"
+  },
+  "keywords": [
+    "microservices",
+    "nodejs",
+    "typescript",
+    "express",
+    "monorepo",
+    "didatico"
+  ],
+  "author": "Seu Nome ",
+  "license": "MIT",
+  "dependencies": {
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "products-service",
+  "version": "1.0.0",
+  "description": "Microsserviço para gerenciamento de produtos",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec \"npm run build && node dist/server.js\"",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -w -p tsconfig.json",
+    "start": "node dist/server.js"
+  },
+  "keywords": [
+    "products",
+    "microservice",
+    "express",
+    "typescript"
+  ],
+  "author": "Seu Nome ",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.7.2"
+  }
+}
