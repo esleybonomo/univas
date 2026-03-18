@@ -10,12 +10,21 @@ export class OrderService {
    * Validar se o usuário existe em http://localhost:3001/api/users/:id
    */
   async validateUser(userId: string): Promise<boolean> {
-    try {
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`);
-      return response.ok;
-    } catch (error) {
-      console.error('Erro ao validar usuário:', error);
-      return false;
+    var retry = 3;
+    while (retry > 0) {
+      try {
+        const response = await fetch(`http://localhost:3001/api/users/${userId}`, { signal: AbortSignal.timeout(2000) });
+        if (response.ok) {
+          return true;
+        } else {
+          console.warn(`Usuário ${userId} não encontrado. Tentativas restantes: ${retry - 1}`);
+        }
+        return false;
+      } catch (error) {
+        console.error('Erro ao validar usuário:', error);
+        return false;
+      }
+      retry--;
     }
   }
 
@@ -24,16 +33,23 @@ export class OrderService {
    * Buscar produto e seu preço em http://localhost:3002/api/products/:id
    */
   async getProductPrice(productId: string): Promise<number | null> {
-    try {
-      const response = await fetch(`http://localhost:3002/api/products/${productId}`);
-      if (!response.ok) return null;
-      
-      const product = await response.json();
-      return product.price || null;
-    } catch (error) {
-      console.error('Erro ao buscar produto:', error);
-      return null;
+    var retry = 4;
+    while (retry > 0) {
+      try {
+        const response = await fetch(`http://localhost:3002/api/products/${productId}`, { signal: AbortSignal.timeout(2000) });
+        if (response.ok) {
+          const product = await response.json();
+          return product.price || null;
+        } else {
+          console.warn(`Produto ${productId} não encontrado. Tentativas restantes: ${retry - 1}`);
+        }
+        return null;
+      } catch (error) {
+        console.error('Erro ao buscar produto:', error);
+      }
+      retry--;
     }
+    return null;
   }
 
   /**

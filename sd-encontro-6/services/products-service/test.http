@@ -1,0 +1,14 @@
+POST http://localhost:3002/api/products HTTP/1.1
+content-type: application/json 
+
+{
+    "name": "Sample Product",
+    "price": 19.99
+}
+
+###
+
+GET http://localhost:3002/api/products HTTP/1.1
+
+###
+GET http://localhost:3002/api/products/62a3685b5a7c119cbb8e27cd HTTP/1.1

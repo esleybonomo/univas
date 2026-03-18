@@ -1,0 +1,16 @@
+POST http://localhost:3003/api/orders HTTP/1.1
+content-type: application/json
+
+{
+    "userId": "2ef79ae0d2db1819cbb5762c6",
+    "productId": "62a3685b5a7c119cbb8e27cd",
+    "quantity": 2
+}
+
+###
+
+GET http://localhost:3003/api/orders HTTP/1.1
+
+###
+
+GET http://localhost:3003/api/orders/mmcrup1hdv9tfo1cji5 HTTP/1.1

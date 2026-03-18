@@ -18,7 +18,8 @@ export class ProductsController {
   /**
    * GET /api/products/:id - Busca um produto por ID.
    */
-  getById = (req: Request, res: Response) => {
+  getById = async (req: Request, res: Response) => {
+    console.log(`Buscando produto com ID: ${req.params.id}`);
     const product = this.service.getById(req.params.id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });

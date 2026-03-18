@@ -1,0 +1,15 @@
+GET http://localhost:3001/api/users HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "email": "b@b.com"
+}
+
+###
+
+DELETE http://localhost:3001/api/users/9cae6de9d023e819cbb58ca36 HTTP/1.1
