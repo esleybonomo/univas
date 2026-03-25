@@ -62,8 +62,6 @@ Header para idempotência: `idempotency-key: abc123`.
 3. Delete via `DELETE /pedidos/2`.
    - **Pergunta:** Por que **204** (sem body)? E se ID inválido?
 
-**Registro:** Tire prints das respostas e cole no Google Docs (entrega final).
-
 ### **Atividade 3: Resiliência em SD (30 min - Todos)**
 1. Teste `GET /pedidos/status-lento` (3s de delay).
    - Configure timeout no Postman (5s) e observe falha.
@@ -76,11 +74,6 @@ Header para idempotência: `idempotency-key: abc123`.
 - Implemente filtro: `GET /pedidos?status=pendente`.
 - Persista em arquivo JSON (use `fs` module).
 - Ajude um colega e registre no chat da turma.
-
-**Rubrica de Avaliação (0-10 pts):**
-- Execução CRUD: 4 pts (prints comprovados).
-- Interpretação erros/status: 3 pts (respostas às perguntas).
-- Discussão resiliência: 3 pts (participação no check).
 
 **Dados resetam ao reiniciar** (memória volátil – simula falha de serviço).
 
