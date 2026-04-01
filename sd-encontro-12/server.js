@@ -1,4 +1,6 @@
 const express = require('express');
+const axios = require('axios');
+
 const app = express();
 const PORT = 3000;
 
@@ -11,6 +13,16 @@ let pedidos = [
   { id: 2, cliente: "Maria Oliveira", item: "Mouse Logitech", valor: 150, status: "enviado" }
 ];
 let nextId = 3; // Contador de IDs
+
+async function searchCep(cep) {
+  // Simulação de busca de CEP (substitua com uma API real)
+      const res = await axios.get(
+        `https://viacep.com.br/ws/${cep}/json/`
+      );
+      let endereco = res.data;
+      console.log(`Busca CEP ${cep}:`, endereco);
+      return endereco;
+}
 
 // GET /pedidos - Lista todos
 app.get('/pedidos', (req, res) => {
@@ -28,14 +40,25 @@ app.get('/pedidos/:id', (req, res) => {
 });
 
 // POST /pedidos - Cria novo (com idempotência básica via header)
-app.post('/pedidos', (req, res) => {
-  const { cliente, item, valor, status = 'pendente' } = req.body;
+app.post('/pedidos', async (req, res) => {
+  const { cliente, item, valor, cepCliente, status = 'pendente' } = req.body;
   const idempotencyKey = req.headers['idempotency-key'];
 
   // Validação simples
   if (!cliente || !item || !valor) {
     return res.status(400).json({ error: { code: 'BAD_REQUEST', message: 'Cliente, item e valor são obrigatórios' } });
   }
+
+  let enderecoCliente = null;
+  if (cepCliente) { 
+    await searchCep(cepCliente).then(endereco => {
+      console.log(`Endereço encontrado para CEP ${cepCliente}:`, endereco); 
+      enderecoCliente = endereco;
+    }).catch(err => {
+      console.error(`Erro ao buscar CEP ${cepCliente}:`, err.message);
+    });
+  }
+  console.log(`Endereço do cliente (${cliente}):`, enderecoCliente);
 
   // Idempotência: verifica se já existe pelo key (simulação para retries)
   if (idempotencyKey && pedidos.find(p => p.idempotencyKey === idempotencyKey)) {
@@ -46,6 +69,7 @@ app.post('/pedidos', (req, res) => {
   const novoPedido = {
     id: nextId++,
     cliente,
+    endereco: enderecoCliente || 'Não fornecido',
     item,
     valor: parseFloat(valor),
     status,
@@ -89,7 +113,7 @@ app.delete('/pedidos/:id', (req, res) => {
 });
 
 // Simulação de latência (para SD: timeouts/retries)
-app.get('/pedidos/status-lento', (req, res) => {
+app.get('/status-lento', (req, res) => {
   setTimeout(() => {
     if (Math.random() > 0.7) { // 30% chance de falha intermitente
       return res.status(503).json({ error: { code: 'SERVICE_UNAVAILABLE', message: 'Serviço temporariamente indisponível' } });

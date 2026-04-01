@@ -5,7 +5,7 @@ GET http://localhost:3000/health
 GET http://localhost:3000/pedidos
 
 ### 2. GET /pedidos/:id - Detalhe de um pedido (ex: ID 1)
-GET http://localhost:3000/pedidos/1
+GET http://localhost:3000/pedidos/3
 
 ### 3. POST /pedidos - Cria novo pedido (sem idempotency-key)
 POST http://localhost:3000/pedidos
@@ -21,12 +21,13 @@ Content-Type: application/json
 ### 4. POST /pedidos - Cria com idempotency-key (teste retry/duplicata)
 POST http://localhost:3000/pedidos
 Content-Type: application/json
-idempotency-key: abc123
+idempotency-key: abc12345666676
 
 {
   "cliente": "João Teste",
+  "cepCliente": "37551350",
   "item": "Teclado Mecânico",
-  "valor": 300
+  "valor": 0.01
 }
 
 ### 5. PUT /pedidos/:id - Atualiza completo (ex: ID 1)
@@ -52,7 +53,7 @@ Content-Type: application/json
 DELETE http://localhost:3000/pedidos/3
 
 ### 8. GET /pedidos/status-lento - Simula latência (3s) + falha intermitente
-GET http://localhost:3000/pedidos/status-lento
+GET http://localhost:3000/status-lento
 
 ### Teste de Erro: POST sem campos obrigatórios
 POST http://localhost:3000/pedidos
