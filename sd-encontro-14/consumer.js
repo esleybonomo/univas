@@ -15,7 +15,7 @@ const executar = async () => {
 
   // Assina o tópico — fromBeginning: true lê desde o início
   await consumer.subscribe({
-    topic: 'mensagens-aula',
+    topic: 'exemplo-particoes',
     fromBeginning: true
   });
 

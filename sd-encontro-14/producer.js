@@ -20,11 +20,11 @@ const executar = async () => {
   setInterval(async () => {
     const mensagem = `Pedido #${contador++} criado às ${new Date().toISOString()}`;
     await producer.send({
-      topic: 'mensagens-aula',    // tópico de destino
+      topic: 'exemplo-particoes',    // tópico de destino
       messages: [{ value: mensagem }]
     });
     console.log(`📤 Enviado: ${mensagem}`);
-  }, 2000);
+  }, 200);
 };
 
 executar().catch(console.error);
