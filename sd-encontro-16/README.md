@@ -66,49 +66,42 @@ Este arquivo (`producer.js`) implementa uma API REST simples que recebe requisi�
 const express = require('express');
 const { Kafka } = require('kafkajs');
 const { v4: uuid } = require('uuid');
-const app = express(); app.use(express.json());
+const app = express();
+app.use(express.json());
 
-// Configuração do Kafka Producer
-const kafka = new Kafka({ clientId: 'api-pedidos', brokers: ['localhost:9092'] }); // Altere para SEU-IP:9092 se remoto
+const kafka = new Kafka({ clientId: 'api-pedidos', brokers: ['localhost:9092'] });
 const producer = kafka.producer({
-  transactionalId: 'txn-pedidos',  // Garante idempotência e exactly-once semantics
-  maxInFlightRequestsPerConnection: 1,  // Garante ordenação de mensagens por partição
-  retry: { retries: 10, initialRetryTime: 300 }, // Retenta em caso de falha temporária
-  acks: 'all',  // Confirmação de que todas as réplicas receberam a mensagem
-  idempotent: true // Habilita idempotência no producer
+  idempotent: true,  // Sem duplicatas
+  acks: 'all',       // Durabilidade (réplicas confirmam)
+  retries: 10,       // Retry automático
+  maxInFlightRequestsPerConnection: 1,  // Ordenação
+  transactionTimeout: 30000
 });
 
-// Conecta o producer ao Kafka ao iniciar a aplicação
 (async () => {
   await producer.connect();
-  console.log('API de Pedidos pronta e conectada ao Kafka!');
+  console.log('✅ API Pedidos pronta!');
 })();
 
-// Endpoint para criar um novo pedido
 app.post('/pedidos', async (req, res) => {
-  const { lojaId, itens } = req.body;  // Ex: {lojaId: "loja1", itens: [{produto: "pizza", qtd: 2}]}
-  const pedidoId = uuid(); // Gera um ID único para o pedido
-
   try {
-    await producer.transaction(); // Inicia uma transação Kafka
+    const { lojaId, itens } = req.body;
+    const pedidoId = uuid();
+    const evento = { pedidoId, lojaId, itens, timestamp: Date.now() };
+
     await producer.send({
-      topic: 'pedidos-criados',
-      messages: [{ 
-        key: lojaId, // A chave (lojaId) garante que pedidos da mesma loja vão para a mesma partição, mantendo a ordem
-        value: JSON.stringify({ pedidoId, lojaId, itens, timestamp: Date.now() }) 
-      }]
+      topic: 'pedidos-criados',  // Certifique-se que existe!
+      messages: [{ key: lojaId, value: JSON.stringify(evento) }]
     });
-    await producer.commitTransaction(); // Confirma a transação
-    res.json({ status: 'Pedido criado e evento publicado com sucesso!', pedidoId });
+
+    res.json({ status: 'Pedido criado e evento publicado!', pedidoId });
   } catch (error) {
-    console.error('Erro ao processar pedido:', error);
-    await producer.abortTransaction(); // Aborta a transação em caso de erro
-    res.status(500).json({ status: 'Erro ao criar pedido', error: error.message });
+    console.error('💥 Erro:', error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Inicia o servidor Express
-app.listen(3000, () => console.log('API de Pedidos escutando em http://localhost:3000'));
+app.listen(3000, () => console.log('API em http://localhost:3000'));
 ```
 
 -   **Rode o Producer:**
