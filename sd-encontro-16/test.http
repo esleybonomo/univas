@@ -1,0 +1,16 @@
+curl -X POST -H "Content-Type: application/json" 
+-d '{
+    "lojaId": "loja1",
+    "itens": [
+        {
+            "produto": "pizza",
+            "qtd": 2
+        },
+        {
+            "produto": "refrigerante",
+            "qtd": 1
+        }
+    ]
+}' 
+
+http://localhost:3000/pedidos

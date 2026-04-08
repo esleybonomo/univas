@@ -1,0 +1,18 @@
+{
+  "name": "sd-encontro-16",
+  "version": "1.0.0",
+  "description": "Bem-vindos à aula prática de Sistemas Distribuídos! Nesta sessão, vamos mergulhar no Apache Kafka para construir um sistema de processamento de pedidos de e-commerce, simulando cenários reais de estoque e notificação. Preparem-se para colocar a mão na massa com Node.js!",
+  "main": "consumer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1",
+    "kafkajs": "^2.2.4",
+    "uuid": "^13.0.0"
+  }
+}
