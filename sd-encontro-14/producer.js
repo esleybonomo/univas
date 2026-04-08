@@ -24,7 +24,7 @@ const executar = async () => {
       messages: [{ value: mensagem }]
     });
     console.log(`📤 Enviado: ${mensagem}`);
-  }, 200);
+  }, 2);
 };
 
 executar().catch(console.error);
