@@ -1,6 +1,6 @@
 curl -X POST -H "Content-Type: application/json" 
 -d '{
-    "lojaId": "loja1",
+    "lojaId": "lojaxpto",
     "itens": [
         {
             "produto": "pizza",

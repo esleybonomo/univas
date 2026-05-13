@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+
+  mongo1:
+    image: mongo:7
+    container_name: mongo1
+    ports:
+      - "27017:27017"
+    command: [ "mongod", "--replSet", "rs0", "--bind_ip_all" ]
+
+  mongo2:
+    image: mongo:7
+    container_name: mongo2
+    ports:
+      - "27018:27017"
+    command: [ "mongod", "--replSet", "rs0", "--bind_ip_all" ]
+
+  mongo3:
+    image: mongo:7
+    container_name: mongo3
+    ports:
+      - "27019:27017"
+    command: [ "mongod", "--replSet", "rs0", "--bind_ip_all" ]
+
+  mongosetup:
+    image: mongo:7
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    restart: "no"
+    entrypoint: >
+      bash -c " sleep 10 && mongosh --host mongo1:27017 --eval ' rs.initiate({
+        _id: \"rs0\",
+        members: [
+          { _id: 0, host: \"mongo1:27017\" },
+          { _id: 1, host: \"mongo2:27017\" },
+          { _id: 2, host: \"mongo3:27017\" }
+        ]
+      })' "
+
+  app:
+    build: ./app
+    container_name: cap-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3

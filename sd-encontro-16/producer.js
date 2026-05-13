@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 const app = express();
 app.use(express.json());
 
-const kafka = new Kafka({ clientId: 'api-pedidos', brokers: ['localhost:9092'] });
+const kafka = new Kafka({ clientId: 'api-pedidos-esley', brokers: ['localhost:9092'] });
 const producer = kafka.producer({
   idempotent: true,  // Sem duplicatas
   acks: 'all',       // Durabilidade (réplicas confirmam)

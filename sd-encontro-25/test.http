@@ -1,0 +1,20 @@
+###
+curl -X POST http://localhost:3000/strong/write \
+-H "Content-Type: application/json" \
+-d '{"name":"Alice","balance":100}'
+
+###
+curl http://localhost:3000/strong/read/Alice
+
+
+
+###
+curl -X POST http://localhost:3000/eventual/write \
+-H "Content-Type: application/json" \
+-d '{"name":"Notebook","stock":10}'
+
+###
+curl http://localhost:3000/eventual/read/Notebook
+
+
+
